@@ -28,7 +28,7 @@ def create_user():
             subject = input("Subject: ")
 
             classes = []
-            print("Enter classes (empty line to stop):")
+            print("Enter classes (press Enter on empty line to stop):")
             while True:
                 c = input()
                 if c == "":
@@ -101,11 +101,11 @@ def delete_user():
 # ----- MANAGE USERS -----
 def manage_user():
     while True:
-        print("\nManage: class, student, teacher, homeroom teacher, delete, end")
+        print("\nManage: class, student, teacher, homeroom teacher, end")
         choice = input("Choose option: ").lower()
 
         if choice == "class":
-            class_name = input("Enter class: ")
+            class_name = input("Class: ")
 
             print("\nStudents:")
             found = False
@@ -117,10 +117,15 @@ def manage_user():
             if not found:
                 print("No students found.")
 
-            print("Homeroom teacher:")
+            print("\nHomeroom teacher:")
+            homeroom_found = False
             for (f, l), data in homeroom_teachers.items():
                 if data["class"] == class_name:
                     print("-", f, l)
+                    homeroom_found = True
+
+            if not homeroom_found:
+                print("No homeroom teacher found.")
 
         elif choice == "student":
             first = input("First name: ")
@@ -131,10 +136,15 @@ def manage_user():
                 class_name = students[key]["class"]
                 print("Class:", class_name)
 
-                print("Teachers:")
+                print("\nTeachers:")
+                teacher_found = False
                 for (f, l), data in teachers.items():
                     if class_name in data["classes"]:
                         print("-", f, l, "(", data["subject"], ")")
+                        teacher_found = True
+
+                if not teacher_found:
+                    print("No teachers found for this class.")
             else:
                 print("Student not found.")
 
@@ -164,9 +174,6 @@ def manage_user():
                         print("-", f, l)
             else:
                 print("Not found.")
-
-        elif choice == "delete":
-            delete_user()
 
         elif choice == "end":
             break
